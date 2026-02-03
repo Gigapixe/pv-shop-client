@@ -1,0 +1,413 @@
+@import "tailwindcss";
+
+/* Specify content sources for Tailwind to scan */
+@source "./src/**/*.{html,js,jsx,ts,tsx}";
+
+/* Define dark mode variant using Tailwind's dark mode class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Define custom theme values (colors, fonts, spacing, breakpoints) */
+@theme {
+  /* Custom colors for primary, secondary, and warning */
+  --color-primary: #12b47e; /* Blue for primary buttons (light mode) */
+  --color-secondary: #261e63; /* Gray for secondary buttons (light mode) */
+  --color-primary-dark: #059669;
+  --color-secondary-dark: #4b6cb7;
+  --color-warning: #f59e0b; /* Amber for warning buttons (light mode) */
+  --color-warning-dark: #d97706; /* Darker amber for dark mode contrast */
+  --color-background: #eceef1; /* Light mode background */
+  --color-background-dark: #141414; /* Softer dark mode background */
+  --color-background-dark-2: #11182780; /* make this color 50% opacity of --color-background-dark-2 */
+  --color-background-light: #f8f8f8; /* Light gray for light mode secondary background */
+  --color-text: #111827; /* Light mode text */
+  /* --color-text-dark: #e5e7eb;  */
+  --color-text-light: #ffffff; /* Light gray for light mode text */
+  --color-text-gray: #14141680;
+  --color-text-dark: #0e0e0e; /* Light gray for dark mode text */
+
+  --color-border-light: #d8d8d8; /* Light gray for light mode borders */
+  --color-border-dark: #303030; /* Dark gray for dark mode borders */
+  --color-shadow-light: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --color-shadow-dark: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  /* Custom font families */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Georgia", serif;
+  --font-mono: "Fira Code", monospace;
+
+  /* Custom breakpoints */
+  --breakpoint-sm: 420px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+body {
+  @apply bg-[var(--color-background)] text-[var(--color-text-dark)];
+  font-family: "Neue Montreal", var(--font-sans);
+}
+/* Specific adjustments for body in dark mode */
+.dark body {
+  @apply bg-[var(--color-background-dark)] text-[var(--color-text-light)];
+}
+
+/* Extend Tailwind utilities for custom variables */
+@layer utilities {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+  }
+  @media (min-width: 420px) {
+    .container {
+      max-width: 420px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+    }
+  }
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  .bg-primary-dark {
+    @apply dark:bg-[var(--color-primary-dark)];
+  }
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+  .bg-secondary-dark {
+    @apply dark:bg-[var(--color-secondary-dark)];
+  }
+
+  .bg-warning {
+    background-color: var(--color-warning);
+  }
+  .bg-warning-dark {
+    @apply dark:bg-[var(--color-warning-dark)];
+  }
+  .text-primary {
+    color: var(--color-primary);
+  }
+  .text-primary-dark {
+    @apply dark:text-[var(--color-primary-dark)];
+  }
+  .text-secondary {
+    color: var(--color-secondary);
+  }
+  .text-secondary-dark {
+    @apply dark:text-[var(--color-secondary-dark)];
+  }
+  .text-warning {
+    color: var(--color-warning);
+  }
+  .text-warning-dark {
+    @apply dark:text-[var(--color-warning-dark)];
+  }
+}
+button {
+  cursor: pointer;
+}
+
+/* Hero swiper pagination custom styles */
+/* .hero-swiper .swiper-pagination {
+  bottom: 5px !important;
+} */
+/* .hero-swiper .swiper-pagination-bullet,
+.hero-swiper .swiper-pagination-bullet-active {
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 6px !important;
+  background: var(--color-primary) !important;
+  background-color: var(--color-primary) !important;
+  background-image: none !important;
+  opacity: 0.35 !important;
+  transition: all 200ms ease !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06) inset !important;
+  border: 0 !important;
+}
+.hero-swiper .swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  transform: scale(1.05) !important;
+  background: var(--color-primary) !important;
+  background-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 6px rgba(18, 180, 126, 0.12) !important;
+} */
+/* @media (min-width: 768px) {
+  .hero-swiper .swiper-pagination-bullet {
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 8px !important;
+  }
+} */
+
+/* Rich text handling */
+.prose ul {
+  list-style-type: disc !important;
+  margin-left: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+
+.prose li {
+  list-style: inherit !important;
+  margin-bottom: 0.5rem;
+}
+
+/* Handle nested p tags in li (common in JoditEditor output) */
+.prose li p {
+  margin: 0 !important; /* Remove extra margins from nested p tags */
+}
+
+/* Ordered lists */
+.prose ol {
+  list-style-type: decimal !important;
+  margin-left: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+
+/* Nested lists */
+.prose ul ul,
+.prose ol ul {
+  list-style-type: circle !important;
+  margin-left: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+.prose ol ol,
+.prose ul ol {
+  list-style-type: lower-alpha !important;
+  margin-left: 1.5rem !important;
+
+  padding-left: 1.5rem !important;
+}
+.prose ul {
+  margin-bottom: 1.25rem !important;
+}
+
+/* Headings */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  line-height: 1.2;
+}
+.prose h1 {
+  font-size: 2rem;
+}
+.prose h2 {
+  font-size: 1.5rem;
+}
+.prose h3 {
+  font-size: 1.25rem;
+}
+.prose h4 {
+  font-size: 1rem;
+}
+.prose h5 {
+  font-size: 0.875rem;
+}
+.prose h6 {
+  font-size: 0.75rem;
+}
+.prose p {
+  margin-bottom: 1.25rem !important;
+  line-height: 1.6 !important;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 4px solid var(--color-primary) !important;
+  padding-left: 1rem !important;
+  margin: 1rem 0 !important;
+  font-style: italic;
+}
+
+/* Tables */
+.prose table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  margin-bottom: 1rem !important;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--color-secondary) !important;
+  padding: 0.5rem !important;
+}
+.prose th {
+  background-color: var(--color-secondary) !important;
+  font-weight: 600;
+}
+
+/* Links */
+.prose a {
+  color: var(--color-primary) !important;
+  text-decoration: underline !important;
+}
+
+/* Images */
+.prose img {
+  max-width: 100% !important;
+  height: auto !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Custom tags (e.g., div, span) */
+.prose div,
+.prose span {
+  color: inherit !important;
+}
+
+/* Custom thin scrollbar utility — uses project primary color */
+.thin-scrollbar {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+/* WebKit-based browsers */
+.thin-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06) inset;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  filter: brightness(0.95);
+}
+
+/* Dark mode adjustments */
+.dark .thin-scrollbar {
+  scrollbar-color: var(--color-primary-dark) transparent;
+}
+.dark .thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary-dark);
+}
+
+/* globals.css */
+
+@media print {
+  .barcode-card {
+    break-after: page;
+  }
+  .barcode-card:last-child {
+    break-after: auto;
+  }
+}
+
+
+/* loader spinner */
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.loading-spinner {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner-orbit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: loading-spinner-orbit 1.5s linear infinite;
+}
+
+.loading-spinner-orbit:nth-child(1) {
+  border: 2px solid transparent;
+  border-top: 2px solid var(--spinner-color);
+  box-shadow: 0 0 8px var(--spinner-color);
+  animation-direction: normal;
+}
+
+.loading-spinner-orbit:nth-child(2) {
+  width: 70%;
+  height: 70%;
+  border: 2px solid transparent;
+  border-bottom: 2px solid var(--spinner-color);
+  box-shadow: 0 0 8px var(--spinner-color);
+  animation-direction: reverse;
+  animation-duration: 1s;
+}
+
+@keyframes loading-spinner-orbit {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+.loading-spinner-text {
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  color: var(--spinner-color);
+}
+
+.loading-spinner-dot {
+  animation: loading-spinner-pulse 1.2s ease-in-out infinite;
+}
+
+.loading-spinner-dot:nth-child(1) {
+  animation-delay: -0.4s;
+}
+
+.loading-spinner-dot:nth-child(2) {
+  animation-delay: -0.2s;
+}
+
+.loading-spinner-dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes loading-spinner-pulse {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}

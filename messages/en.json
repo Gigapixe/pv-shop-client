@@ -1,0 +1,8 @@
+{
+  "auth": {
+    "byClickingSignUp": "By clicking {{action}} with Email, Google, Facebook or Apple, you agree to",
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "and": "and"
+  }
+}

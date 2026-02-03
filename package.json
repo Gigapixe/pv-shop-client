@@ -1,0 +1,44 @@
+{
+  "name": "gamingty-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.3.2",
+    "country-state-city": "^3.2.1",
+    "dayjs": "^1.11.19",
+    "firebase": "^12.8.0",
+    "i18n-iso-countries": "^7.14.0",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
+    "libphonenumber-js": "^1.12.31",
+    "next": "^16.1.0",
+    "next-intl": "^4.5.8",
+    "react": "^19.2.4",
+    "react-country-flag": "^3.1.0",
+    "react-dom": "^19.2.4",
+    "react-google-recaptcha": "^3.1.0",
+    "react-hot-toast": "^2.6.0",
+    "react-to-print": "^3.2.0",
+    "react-tooltip": "^5.30.0",
+    "recharts": "^3.5.1",
+    "swiper": "^12.0.3",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-google-recaptcha": "^2.1.9",
+    "eslint": "^9",
+    "eslint-config-next": "^16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
