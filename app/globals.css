@@ -438,3 +438,17 @@ button {
     opacity: 1;
   }
 }
+
+.hero-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  opacity: 1;
+  display: inline-block;
+}
+
+.hero-pagination .swiper-pagination-bullet-active {
+  width: 40px;
+  background: rgba(255, 255, 255, 0.9);
+}
