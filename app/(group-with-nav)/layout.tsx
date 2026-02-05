@@ -1,4 +1,5 @@
 
+import BottomHeader from "@/components/shared/header/BottomHeader";
 import Header from "@/components/shared/header/Header";
 import { Metadata } from "next";
 
@@ -16,6 +17,7 @@ export default async function GroupLayout({
     <>
       <div>
         <Header />
+        <BottomHeader/>
         <main>{children}</main>
         {/* <Footer /> */}
         {/* <MobileFooter /> */}
