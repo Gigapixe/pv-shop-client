@@ -1,4 +1,5 @@
 
+import Header from "@/components/shared/header/Header";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export default async function GroupLayout({
   return (
     <>
       <div>
-        {/* <Header /> */}
+        <Header />
         <main>{children}</main>
         {/* <Footer /> */}
         {/* <MobileFooter /> */}

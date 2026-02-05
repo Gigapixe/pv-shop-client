@@ -8,25 +8,28 @@
 
 /* Define custom theme values (colors, fonts, spacing, breakpoints) */
 @theme {
-  /* Custom colors for primary, secondary, and warning */
-  --color-primary: #12b47e; /* Blue for primary buttons (light mode) */
-  --color-secondary: #261e63; /* Gray for secondary buttons (light mode) */
-  --color-primary-dark: #059669;
-  --color-secondary-dark: #4b6cb7;
+  /* Custom colors */
+  --color-primary: #db5932; /* Primary (light mode) */
+  --color-secondary: #d61900; /* Secondary (light mode) */
+  --color-primary-dark: #0d0d0d; /* Primary dark */
+  --color-secondary-dark: #131313; /* Secondary dark */
+  --color-tertiary: #141414; /* Tertiary */
+
   --color-warning: #f59e0b; /* Amber for warning buttons (light mode) */
   --color-warning-dark: #d97706; /* Darker amber for dark mode contrast */
-  --color-background: #eceef1; /* Light mode background */
-  --color-background-dark: #141414; /* Softer dark mode background */
-  --color-background-dark-2: #11182780; /* make this color 50% opacity of --color-background-dark-2 */
-  --color-background-light: #f8f8f8; /* Light gray for light mode secondary background */
-  --color-text: #111827; /* Light mode text */
-  /* --color-text-dark: #e5e7eb;  */
-  --color-text-light: #ffffff; /* Light gray for light mode text */
-  --color-text-gray: #14141680;
-  --color-text-dark: #0e0e0e; /* Light gray for dark mode text */
 
-  --color-border-light: #d8d8d8; /* Light gray for light mode borders */
-  --color-border-dark: #303030; /* Dark gray for dark mode borders */
+  --color-background: #eceef1; /* Light mode background */
+  --color-background-dark: var(--color-tertiary); /* Dark mode background */
+  --color-background-dark-2: #14141480; /* 50% opacity of tertiary (#141414) */
+  --color-background-light: #f8f8f8; /* Light gray for light mode secondary background */
+
+  --color-text: #111827; /* Light mode text */
+  --color-text-light: #ffffff; /* Text on dark backgrounds */
+  --color-text-gray: #14141680;
+  --color-text-dark: #0e0e0e; /* Dark text (light mode) */
+
+  --color-border-light: #d8d8d8; /* Light mode borders */
+  --color-border-dark: #303030; /* Dark mode borders */
   --color-shadow-light: 0 1px 2px rgba(0, 0, 0, 0.05);
   --color-shadow-dark: 0 1px 2px rgba(0, 0, 0, 0.2);
 
@@ -46,6 +49,7 @@ body {
   @apply bg-[var(--color-background)] text-[var(--color-text-dark)];
   font-family: "Neue Montreal", var(--font-sans);
 }
+
 /* Specific adjustments for body in dark mode */
 .dark body {
   @apply bg-[var(--color-background-dark)] text-[var(--color-text-light)];
@@ -61,6 +65,7 @@ body {
     padding-right: 1rem;
     max-width: 100%;
   }
+
   @media (min-width: 420px) {
     .container {
       max-width: 420px;
@@ -81,17 +86,27 @@ body {
       max-width: 1280px;
     }
   }
+
+  /* Background utilities */
   .bg-primary {
     background-color: var(--color-primary);
   }
   .bg-primary-dark {
     @apply dark:bg-[var(--color-primary-dark)];
   }
+
   .bg-secondary {
     background-color: var(--color-secondary);
   }
   .bg-secondary-dark {
     @apply dark:bg-[var(--color-secondary-dark)];
+  }
+
+  .bg-tertiary {
+    background-color: var(--color-tertiary);
+  }
+  .bg-tertiary-dark {
+    @apply dark:bg-[var(--color-tertiary)];
   }
 
   .bg-warning {
@@ -100,18 +115,29 @@ body {
   .bg-warning-dark {
     @apply dark:bg-[var(--color-warning-dark)];
   }
+
+  /* Text utilities */
   .text-primary {
     color: var(--color-primary);
   }
   .text-primary-dark {
     @apply dark:text-[var(--color-primary-dark)];
   }
+
   .text-secondary {
     color: var(--color-secondary);
   }
   .text-secondary-dark {
     @apply dark:text-[var(--color-secondary-dark)];
   }
+
+  .text-tertiary {
+    color: var(--color-tertiary);
+  }
+  .text-tertiary-dark {
+    @apply dark:text-[var(--color-tertiary)];
+  }
+
   .text-warning {
     color: var(--color-warning);
   }
@@ -119,6 +145,7 @@ body {
     @apply dark:text-[var(--color-warning-dark)];
   }
 }
+
 button {
   cursor: pointer;
 }
