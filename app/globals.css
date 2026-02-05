@@ -452,3 +452,13 @@ button {
   width: 40px;
   background: rgba(255, 255, 255, 0.9);
 }
+
+/* 🌙 dark mode */
+.dark .hero-pagination .swiper-pagination-bullet {
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+/* 🌙 dark mode active */
+.dark .hero-pagination .swiper-pagination-bullet-active {
+  background-color: #0e0e0e; /* or var(--color-text-dark) */
+}

@@ -56,7 +56,7 @@ export default function HeroSlider() {
         >
           {slides.map((s, idx) => (
             <SwiperSlide key={idx}>
-              <div className="relative h-[70vh] w-full">
+              <div className="relative h-screen w-full">
                 <Image
                   src={s.imageSrc}
                   alt="Hero"
@@ -102,18 +102,20 @@ export default function HeroSlider() {
               onClick={() => swiperRef.current?.slidePrev()}
               className="grid h-10 w-14 place-items-center rounded-full bg-background/30 backdrop-blur hover:bg-background/40 transition"
             >
-              <LeftArrowIcon fill="none" className="text-white"/>
+              <LeftArrowIcon fill="none" className=" dark:text-text-dark"/>
             </button>
 
             {/* ✅ pagination dots container */}
-            <div className="hero-pagination flex items-center gap-1 cursor-pointer" />
+           <div>
+             <div className="hero-pagination flex items-center gap-1 cursor-pointer dark:text-text-dark" />
+           </div>
 
             <button
               aria-label="Next slide"
               onClick={() => swiperRef.current?.slideNext()}
               className="grid h-10 w-14 place-items-center rounded-full bg-background/30 backdrop-blur hover:bg-background/40 transition"
             >
-              <RightArrowIcon fill="none" />
+              <RightArrowIcon fill="none" className="dark:text-text-dark"/>
             </button>
           </div>
         </div>
