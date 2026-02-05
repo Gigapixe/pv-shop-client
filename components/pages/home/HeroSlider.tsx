@@ -102,7 +102,7 @@ export default function HeroSlider() {
               onClick={() => swiperRef.current?.slidePrev()}
               className="grid h-10 w-14 place-items-center rounded-full bg-background/30 backdrop-blur hover:bg-background/40 transition"
             >
-              <LeftArrowIcon fill="none" className=" dark:text-text-dark"/>
+              <LeftArrowIcon fill="none" className="text-background dark:text-text-dark"/>
             </button>
 
             {/* ✅ pagination dots container */}
@@ -115,7 +115,7 @@ export default function HeroSlider() {
               onClick={() => swiperRef.current?.slideNext()}
               className="grid h-10 w-14 place-items-center rounded-full bg-background/30 backdrop-blur hover:bg-background/40 transition"
             >
-              <RightArrowIcon fill="none" className="dark:text-text-dark"/>
+              <RightArrowIcon fill="none" className="text-background dark:text-text-dark"/>
             </button>
           </div>
         </div>
