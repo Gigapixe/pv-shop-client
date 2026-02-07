@@ -44,7 +44,7 @@ export default function Footer() {
     >
       <div className="w-full bg-no-repeat bg-cover bg-center"
         style={{ backgroundImage: "url(/assets/footerbg.png)" }}>
-        <div className="container mx-auto px-4 pb-5 pt-20">
+        <div className="container mx-auto px-4 pb-5 pt-16 lg:pt-20">
           {/* Top row */}
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             {/* Logo */}
