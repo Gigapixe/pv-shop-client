@@ -462,3 +462,18 @@ button {
 .dark .hero-pagination .swiper-pagination-bullet-active {
   background-color: #0e0e0e; /* or var(--color-text-dark) */
 }
+
+.footer-bg {
+  background-image: url("/assets/footerbg.png");
+}
+
+.dark .footer-bg {
+  background-image: url("/assets/blackBgFooter.png");
+}
+.grow-bg {
+  background-image: url("/assets/footerbg.png");
+}
+
+.dark .grow-bg {
+  background-image: url("/assets/blackBgFooter.png");
+}

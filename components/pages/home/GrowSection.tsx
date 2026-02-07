@@ -6,8 +6,7 @@ import Button from "@/components/ui/Button";
 const GrowSection = () => {
     return (
         <section
-            className="w-full py-14 bg-no-repeat bg-cover bg-center"
-            style={{ backgroundImage: "url(/assets/footerbg.png)" }}
+            className="w-full py-14 bg-no-repeat bg-cover bg-center grow-bg"
         >
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
