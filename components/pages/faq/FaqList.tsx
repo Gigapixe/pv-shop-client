@@ -59,7 +59,7 @@ export default function FaqList() {
   const [openIndex, setOpenIndex] = useState<number>(0);
 
   return (
-    <section className="w-full bg-white dark:bg-background-dark">
+    <section className="w-full pb-16 bg-white dark:bg-background-dark">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto">
