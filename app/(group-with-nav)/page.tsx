@@ -1,3 +1,4 @@
+import FaqList from '@/components/pages/faq/FaqList';
 import FeaturesHighlights from '@/components/pages/home/FeaturesHighlights';
 import GrowSection from '@/components/pages/home/GrowSection';
 import HeroSlider from '@/components/pages/home/HeroSlider'
@@ -67,6 +68,7 @@ const Home = () => {
       <GrowSection />
       <FeaturesHighlights />
       <TestimonialsSlider/>
+      <FaqList/>
     </div>
   )
 }

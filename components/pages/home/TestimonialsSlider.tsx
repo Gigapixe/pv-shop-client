@@ -66,7 +66,7 @@ export default function TestimonialsSlider() {
     const swiperRef = useRef<SwiperType | null>(null);
 
     return (
-        <section className="w-full py-14 sm:py-20 bg-white dark:bg-background">
+        <section className="w-full py-14 sm:py-20 bg-white dark:bg-background-dark">
             <div className="container mx-auto px-4">
                 {/* Top row: title + nav */}
                 <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -138,7 +138,7 @@ export default function TestimonialsSlider() {
                                 <div
                                     className="
                     h-full rounded-2xl p-6
-                    bg-[#FFF5F0] dark:bg-background-dark-2
+                    bg-[#FFF5F0] dark:bg-[#282828]
                     border border-transparent dark:border-white/5
                   "
                                 >

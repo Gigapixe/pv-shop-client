@@ -24,7 +24,7 @@ const FEATURES = [
 
 export default function FeaturesHighlights() {
   return (
-    <section className="w-full py-14 sm:py-20 bg-white dark:bg-background">
+    <section className="w-full py-14 sm:py-20 bg-white dark:bg-background-dark">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto">
@@ -47,7 +47,7 @@ export default function FeaturesHighlights() {
               key={item.title}
               className="
                 rounded-2xl p-6
-                bg-[#FFF5F0] dark:bg-background-dark-2
+                bg-[#FFF5F0] dark:bg-[#282828]
                 transition hover:shadow-md
               "
             >
