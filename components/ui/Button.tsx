@@ -50,7 +50,7 @@ export default function Button({
 
   const variants: Record<ButtonVariant, string> = {
     primary:
-      "bg-[var(--color-primary)] text-[var(--color-text-light)] hover:bg-[var(--color-primary-dark)] dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary)]",
+      "bg-[var(--color-primary)] text-[var(--color-text-light)] hover:bg-[var(--color-primary-dark)]",
     secondary:
       "bg-[var(--color-secondary)] text-[var(--color-text-light)] hover:bg-[var(--color-secondary-dark)] dark:bg-[var(--color-secondary-dark)] dark:hover:bg-[var(--color-secondary)]",
     outline:

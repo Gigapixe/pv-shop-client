@@ -42,8 +42,8 @@ export default function Footer() {
     <footer
       className="w-full"
     >
-      <div className="w-full bg-no-repeat bg-cover bg-center"
-        style={{ backgroundImage: "url(/assets/footerbg.png)" }}>
+      <div className="w-full bg-no-repeat bg-cover bg-center footer-bg"
+        >
         <div className="container mx-auto px-4 pb-5 pt-16 lg:pt-20">
           {/* Top row */}
           <div className="flex flex-col lg:flex-row justify-center lg:items-start lg:justify-between gap-8">
