@@ -68,7 +68,7 @@ export default function PackageCard({
               slug,
               price,
               originalPrice: undefined,
-              image: "", // your store requires image, keep empty if not used
+              image: "", 
               type,
               paymentMethods,
             }}

@@ -47,21 +47,6 @@ export default function Header() {
 
             {/* Desktop actions */}
             <div className="hidden lg:flex items-center gap-3">
-
-
-              {/* Wallet pill */}
-              {userInfo && userInfo.balance != null && (
-                <Link href="/user/my-wallet">
-                  <div className="flex items-center gap-2 rounded-full border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5 transition">
-                    <CartIcon fill="none" className="w-5 h-5" />
-                    <span className="whitespace-nowrap">
-                      <CurrencyDisplay amount={userInfo.balance} />
-                    </span>
-                  </div>
-                </Link>
-              )}
-
-
               {/* Login / Account pill */}
               {!_hasHydrated ? (
                 <div className="h-9 w-24 rounded-full bg-gray-100" aria-hidden="true" />
@@ -93,7 +78,7 @@ export default function Header() {
               {!_hasHydrated ? null : userInfo ? (
                 <Link
                   href="/user"
-                   className="rounded-full border border-primary px-8 py-2 text-[18px] font-semibold text-primary bg-primary/5 hover:bg-primary/10 transition"
+                  className="rounded-full border border-primary px-8 py-2 text-[18px] font-semibold text-primary bg-primary/5 hover:bg-primary/10 transition"
                 >
                   {getFirstName(userInfo.name) ?? "Account"}
                 </Link>

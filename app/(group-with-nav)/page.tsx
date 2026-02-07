@@ -1,3 +1,4 @@
+import GrowSection from '@/components/pages/home/GrowSection';
 import HeroSlider from '@/components/pages/home/HeroSlider'
 import PackageCard from '@/components/pages/home/PackageCard';
 import StatsStrip from '@/components/pages/home/StatsStrip'
@@ -60,6 +61,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <GrowSection/>
     </div>
   )
 }
