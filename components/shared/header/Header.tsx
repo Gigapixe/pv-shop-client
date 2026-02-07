@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import FullLogo from "@/components/ui/FullLogo";
 import NavLinks from "./NavLinks";
 import { useAuthStore } from "@/zustand/authStore";
-import CurrencyDisplay from "@/components/ui/currency/CurrencyDisplay";
 import CartIcon from "@/public/icons/CartIcon";
 import ThemeToggle from "@/lib/ThemeToggle";
+import MobileMenu from "./MobileMenu";
 
 export default function Header() {
-  const { user: userInfo, _hasHydrated } = useAuthStore();
+  const { user: userInfo, _hasHydrated, token } = useAuthStore();
   const pathname = usePathname();
   const isUserRoute = pathname?.startsWith("/user");
 
@@ -21,7 +21,7 @@ export default function Header() {
   };
 
   return (
-    <header className={`${isUserRoute ? "relative" : "sticky"} top-0 z-30 w-full bg-background dark:bg-background-dark`}>
+    <> <header className={`${isUserRoute ? "relative" : "sticky"} top-0 z-30 w-full hidden lg:block bg-background dark:bg-background-dark`}>
       <div className={`${isUserRoute ? "px-4" : "container mx-auto"} py-3`}>
         <div className="flex items-center justify-between gap-4">
           {/* Left: Logo */}
@@ -40,28 +40,8 @@ export default function Header() {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-3">
-            {/* Mobile menu (you already have) */}
-            {/* <div className="lg:hidden">
-              <MobileMenu userInfo={userInfo} token={token} />
-            </div> */}
-
             {/* Desktop actions */}
             <div className="hidden lg:flex items-center gap-3">
-
-
-              {/* Wallet pill */}
-              {userInfo && userInfo.balance != null && (
-                <Link href="/user/my-wallet">
-                  <div className="flex items-center gap-2 rounded-full border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5 transition">
-                    <CartIcon fill="none" className="w-5 h-5" />
-                    <span className="whitespace-nowrap">
-                      <CurrencyDisplay amount={userInfo.balance} />
-                    </span>
-                  </div>
-                </Link>
-              )}
-
-
               {/* Login / Account pill */}
               {!_hasHydrated ? (
                 <div className="h-9 w-24 rounded-full bg-gray-100" aria-hidden="true" />
@@ -93,7 +73,7 @@ export default function Header() {
               {!_hasHydrated ? null : userInfo ? (
                 <Link
                   href="/user"
-                   className="rounded-full border border-primary px-8 py-2 text-[18px] font-semibold text-primary bg-primary/5 hover:bg-primary/10 transition"
+                  className="rounded-full border border-primary px-8 py-2 text-[18px] font-semibold text-primary bg-primary/5 hover:bg-primary/10 transition"
                 >
                   {getFirstName(userInfo.name) ?? "Account"}
                 </Link>
@@ -110,5 +90,9 @@ export default function Header() {
         </div>
       </div>
     </header>
+      {/* Mobile menu (you already have) */}
+      <div className="lg:hidden">
+        <MobileMenu userInfo={userInfo} token={token} />
+      </div></>
   );
 }

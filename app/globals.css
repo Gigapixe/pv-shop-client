@@ -438,3 +438,27 @@ button {
     opacity: 1;
   }
 }
+
+.hero-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  opacity: 1;
+  display: inline-block;
+}
+
+.hero-pagination .swiper-pagination-bullet-active {
+  width: 40px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* 🌙 dark mode */
+.dark .hero-pagination .swiper-pagination-bullet {
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+/* 🌙 dark mode active */
+.dark .hero-pagination .swiper-pagination-bullet-active {
+  background-color: #0e0e0e; /* or var(--color-text-dark) */
+}

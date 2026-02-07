@@ -3,14 +3,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { TbWorld } from "react-icons/tb";
-import MenuIcon from "./../../../public/icons/navbar/MenuIcon";
-import CloseIcon from "./../../../public/icons/navbar/CloseIcon";
 import ThemeToggle from "@/lib/ThemeToggle";
-import { useTranslations } from "next-intl";
-import LanguageCurrencyModal from "@/components/ui/LanguageCurrencyModal";
+
 import NoticeServices from "@/services/noticeServices";
-import NotificationIcon from "@/public/icons/user/NotificationIcon";
+import CartIcon from "@/public/icons/CartIcon";
+import Button from "@/components/ui/Button";
+import SearchCloseIcon from "@/public/icons/SearchCloseIcon";
+import MenuIcon from "@/public/icons/MenuIcon";
 
 interface Props {
   userInfo?: any;
@@ -20,18 +19,27 @@ interface Props {
   LangCurrency?: React.ReactNode;
 }
 
+const NAV_LINKS = [
+  { label: "Best Sellers", href: "/bestseller" },
+  { label: "About Us", href: "/about-us" },
+  { label: "Contact Us", href: "/contact-us" },
+  { label: "FAQ", href: "/faq" },
+];
+
 export default function MobileMenu({
   userInfo,
   token,
-  openSettingsModal,
   LangCurrency,
 }: Props) {
-  const t = useTranslations("common");
-  const nav = useTranslations("navigation");
   const [isOpen, setIsOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
+
+  const getFirstName = (fullName?: string) => {
+    if (!fullName) return null;
+    const first = String(fullName).trim().split(" ")[0];
+    return first ? first.charAt(0).toUpperCase() + first.slice(1) : null;
+  };
 
   const fetchUserNotices = useCallback(async () => {
     if (!userInfo || !token) return;
@@ -43,21 +51,20 @@ export default function MobileMenu({
       } else {
         const res = await NoticeServices.getUserNotices(
           { page: 1, limit: 8 },
-          { token },
+          { token }
         );
         const notices = res?.data?.notices ?? [];
-        setUnreadCount(notices.filter((n) => !n.isRead).length);
+        setUnreadCount(notices.filter((n: any) => !n.isRead).length);
       }
     } catch (err) {
       console.error("Failed to fetch user notices:", err);
     }
   }, [userInfo, token]);
 
+  // outside click + ESC
   useEffect(() => {
     function onClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
+      if (ref.current && !ref.current.contains(e.target as Node)) setIsOpen(false);
     }
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setIsOpen(false);
@@ -70,37 +77,32 @@ export default function MobileMenu({
     };
   }, []);
 
+  // unread count
   useEffect(() => {
     if (!userInfo || !token) {
       setUnreadCount(0);
       return;
     }
-
     fetchUserNotices();
-
     const interval = setInterval(fetchUserNotices, 60000);
     return () => clearInterval(interval);
   }, [userInfo, token, fetchUserNotices]);
 
-  // Sync unread counts when other parts of the app change notices
+  // notice events
   useEffect(() => {
     const onNoticeRead = () => setUnreadCount((p) => Math.max(0, p - 1));
     const onAllRead = () => setUnreadCount(0);
 
-    if (typeof window !== "undefined") {
-      window.addEventListener("noticeRead", onNoticeRead as any);
-      window.addEventListener("noticesMarkedAllRead", onAllRead as any);
-    }
+    window.addEventListener("noticeRead", onNoticeRead as any);
+    window.addEventListener("noticesMarkedAllRead", onAllRead as any);
 
     return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("noticeRead", onNoticeRead as any);
-        window.removeEventListener("noticesMarkedAllRead", onAllRead as any);
-      }
+      window.removeEventListener("noticeRead", onNoticeRead as any);
+      window.removeEventListener("noticesMarkedAllRead", onAllRead as any);
     };
   }, []);
 
-  // Lock body scroll when menu is open
+  // lock body scroll
   useEffect(() => {
     if (!isOpen) return;
     const originalOverflow = document.body.style.overflow;
@@ -111,126 +113,165 @@ export default function MobileMenu({
   }, [isOpen]);
 
   return (
-    <div className="lg:hidden" ref={ref}>
-      {/* Top bar: menu button + logo */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => setIsOpen((s) => !s)}
-          className="hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors"
-          aria-expanded={isOpen}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <CloseIcon /> : <MenuIcon />}
-        </button>
-        <Link href="/" className="shrink-0" onClick={() => setIsOpen(false)}>
-          <div className="h-8 w-8">
+    <div className="w-full" ref={ref}>
+      {/* Header bar (matches screenshot) */}
+      <div className="w-full bg-background dark:bg-background-dark">
+        <div className="px-4 py-3 flex items-center justify-between gap-3">
+          {/* Left: Menu */}
+          <button
+            onClick={() => setIsOpen((s) => !s)}
+            className="p-2 -ml-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition"
+            aria-expanded={isOpen}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <SearchCloseIcon /> : <MenuIcon />}
+          </button>
+
+          {/* Center: Full logo */}
+          <Link href="/" className="flex-1 flex justify-center" onClick={() => setIsOpen(false)}>
             <Image
-              width={32}
-              height={32}
-              className="object-contain"
+              src="/logo/logo.png"
+              alt="Pvaeshop"
+              width={180}
+              height={40}
               priority
-              src="/logo/logo-sort.png"
-              alt="logo"
+              className="h-8 w-auto object-contain"
             />
+          </Link>
+
+          {/* Right: round cart icon (mobile look) */}
+          <Link
+            href="/cart"
+            className="p-2 -mr-2 rounded-full block md:hidden border border-primary/30 bg-primary/5 hover:bg-primary/10 transition"
+            aria-label="Cart"
+          >
+            <CartIcon className="w-5 h-5 text-primary" fill="none" />
+          </Link>
+
+          {/* Tablet row (md): Login + Cart amount pills like screenshot */}
+          <div className="hidden md:flex items-center justify-end gap-3 px-4">
+            {!userInfo ? (
+              <Link href="/login" className="inline-flex">
+                <Button variant="outline" size="md" className="text-primary border-primary/40">
+                  Login
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/user" className="inline-flex">
+                <Button variant="outline" size="md" className="text-primary border-primary/40">
+                  {getFirstName(userInfo?.name) ?? "Account"}
+                </Button>
+              </Link>
+            )}
+
+            <div className="rounded-full flex items-center gap-2 border border-primary/40 bg-primary/5 px-5 py-2 font-semibold text-primary">
+              <CartIcon className="w-5 h-5" fill="none" />
+              $0.00
+            </div>
           </div>
-        </Link>
+        </div>
+
+
       </div>
 
-      {/* Full-width dropdown panel */}
+      {/* Dropdown panel */}
       {isOpen && (
         <>
+          {/* Backdrop */}
           <div
-            className="fixed left-0 right-0 top-16 bottom-0 bg-black/50 z-10 transition-opacity duration-200"
+            className="fixed inset-0 top-16 bg-black/50 z-30"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
 
-          <div className="fixed left-0 right-0 top-16 bg-background-light dark:bg-background-dark z-50 py-6 shadow-lg">
-            <div className="px-4">
-              <div>
-                <h1 className="text-2xl font-bold mb-4">{t("quickLinks")}</h1>
+          {/* Panel */}
+          <div className="fixed left-0 right-0 top-16 z-40 bg-background dark:bg-background-dark shadow-lg">
+            <div className="px-4 py-6">
+              <h1 className="text-xl font-bold mb-4 text-text-dark dark:text-background">
+                Quick Links
+              </h1>
+
+              <div className="space-y-1">
+                {NAV_LINKS.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className="block rounded-xl px-3 py-3 font-semibold text-text-dark dark:text-background hover:bg-black/5 dark:hover:bg-white/10 transition"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {l.label}
+                  </Link>
+                ))}
               </div>
 
-              <Link
-                href="/bestseller"
-                className="block py-2 hover:text-primary font-semibold"
-                onClick={() => setIsOpen(false)}
-              >
-                {nav("bestsellers")}
-              </Link>
+              <div className="my-5 h-px w-full bg-black/10 dark:bg-white/10" />
 
-              <Link
-                href="/about-us"
-                className="block py-2 hover:text-primary font-semibold"
-                onClick={() => setIsOpen(false)}
-              >
-                {nav("aboutUs")}
-              </Link>
-
-              <Link
-                href="/contact-us"
-                className="block py-2 hover:text-primary font-semibold"
-                onClick={() => setIsOpen(false)}
-              >
-                {nav("contactUs")}
-              </Link>
-
-              <hr className="my-4 border-gray-600" />
-
+              {/* Settings row */}
               <div className="flex flex-col gap-4">
-                <div className="flex justify-between items-center">
-                  <h1 className="font-semibold">{t("themeMode")}</h1>
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-text-dark dark:text-background">
+                    Theme Mode
+                  </span>
                   <ThemeToggle />
                 </div>
 
-                {userInfo && (
-                  <div className="flex justify-between items-center">
-                    <h1 className="font-semibold">{t("notifications")}</h1>
-                    <Link
-                      href="/user/notifications"
-                      onClick={() => setIsOpen(false)}
-                    >
+                {/* {userInfo && (
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-text-dark dark:text-background">
+                      Notifications
+                    </span>
+                    <Link href="/user/notifications" onClick={() => setIsOpen(false)}>
                       <button
                         type="button"
-                        className="relative cursor-pointer pt-2 mr-2"
+                        className="relative p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition"
                         aria-label="Open notifications"
                       >
                         <NotificationIcon className="dark:text-white" />
                         {unreadCount > 0 && (
-                          <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
                             {unreadCount}
                           </span>
                         )}
                       </button>
                     </Link>
                   </div>
+                )} */}
+
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-text-dark dark:text-background">
+                    Language & Currency
+                  </span>
+
+
+                </div>
+              </div>
+
+              {/* Mobile actions */}
+              <div className="mt-6 flex gap-3 md:hidden">
+                {!userInfo ? (
+                  <Link href="/login" className="flex-1" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" size="md" className="w-full text-primary border-primary/40">
+                      Login
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href="/user" className="flex-1" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" size="md" className="w-full text-primary border-primary/40">
+                      {getFirstName(userInfo?.name) ?? "Account"}
+                    </Button>
+                  </Link>
                 )}
 
-                <div className="flex justify-between items-center">
-                  <h1 className="font-semibold">{t("languageAndCurrency")}</h1>
-                  {LangCurrency ?? (
-                    <button
-                      onClick={() => {
-                        setIsSettingsModalOpen(true);
-                        setIsOpen(false);
-                      }}
-                      className="text-gray-300 hover:text-primary transition-colors mr-2"
-                    >
-                      <TbWorld className="w-6 h-6" />
-                    </button>
-                  )}
-                </div>
+                <Link href="/packages" className="flex-1" onClick={() => setIsOpen(false)}>
+                  <Button variant="primary" size="md" className="w-full">
+                    Packages
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
         </>
       )}
-
-      {/* Language & Currency Modal */}
-      <LanguageCurrencyModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-      />
     </div>
   );
 }
