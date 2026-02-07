@@ -1,3 +1,4 @@
+import FeaturesHighlights from '@/components/pages/home/FeaturesHighlights';
 import GrowSection from '@/components/pages/home/GrowSection';
 import HeroSlider from '@/components/pages/home/HeroSlider'
 import PackageCard from '@/components/pages/home/PackageCard';
@@ -26,7 +27,7 @@ const packagesData = [
     type: "DIGITAL_PINS" as CartItemType,
     features: ["100 Email PVA accounts", "Fast delivery with replacement policy", "Satisfaction guaranteed"],
   },
-   {
+  {
     _id: "google-pva",
     title: "Google PVA",
     slug: "google-pva",
@@ -62,7 +63,8 @@ const Home = () => {
         </div>
       </section>
 
-      <GrowSection/>
+      <GrowSection />
+      <FeaturesHighlights />
     </div>
   )
 }
