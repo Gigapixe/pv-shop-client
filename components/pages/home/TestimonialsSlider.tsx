@@ -66,14 +66,14 @@ export default function TestimonialsSlider() {
     const swiperRef = useRef<SwiperType | null>(null);
 
     return (
-        <section className="w-full py-14 sm:py-20 bg-white dark:bg-background-dark">
+        <section className="w-full py-14 bg-white dark:bg-background-dark">
             <div className="container mx-auto px-4">
                 {/* Top row: title + nav */}
                 <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                     <div className="max-w-2xl">
                         <SectionLabel className="flex justify-start">Testimonials</SectionLabel>
 
-                        <h2 className="mt-2 text-3xl sm:text-5xl font-bold text-text-dark dark:text-background">
+                        <h2 className="mt-2 text-2xl md:text-[36px] lg:text-5xl font-bold text-text-dark dark:text-background">
                             What Our Clients Say
                         </h2>
 
@@ -83,13 +83,13 @@ export default function TestimonialsSlider() {
                         </p>
                     </div>
 
-                    <div>
+                    <div className="hidden lg:block">
                         {/* Nav buttons */}
-                    <div className="flex items-center gap-3 lg:self-start">
-                        <button
-                            type="button"
-                            onClick={() => swiperRef.current?.slidePrev()}
-                            className="
+                        <div className="flex items-center gap-3 lg:self-start">
+                            <button
+                                type="button"
+                                onClick={() => swiperRef.current?.slidePrev()}
+                                className="
                 h-11 w-11 rounded-full border border-gray-200
                 flex items-center justify-center
                 text-text-dark dark:text-background
@@ -97,25 +97,25 @@ export default function TestimonialsSlider() {
                 hover:bg-gray-50 dark:hover:bg-background-dark
                 transition
               "
-                            aria-label="Previous testimonial"
-                        >
-                            <TestimonialArrowLeftIcon fill="none"/>
-                        </button>
+                                aria-label="Previous testimonial"
+                            >
+                                <TestimonialArrowLeftIcon fill="none" />
+                            </button>
 
-                        <button
-                            type="button"
-                            onClick={() => swiperRef.current?.slideNext()}
-                            className="
+                            <button
+                                type="button"
+                                onClick={() => swiperRef.current?.slideNext()}
+                                className="
                 h-11 w-11 rounded-full
                 flex items-center justify-center
                 bg-primary text-white
                 hover:opacity-95 transition
               "
-                            aria-label="Next testimonial"
-                        >
-                           <TestimonialArrowRightIcon fill="none"/>
-                        </button>
-                    </div>
+                                aria-label="Next testimonial"
+                            >
+                                <TestimonialArrowRightIcon fill="none" />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -172,6 +172,41 @@ export default function TestimonialsSlider() {
                             </SwiperSlide>
                         ))}
                     </Swiper>
+
+                     <div className="lg:hidden block mt-5">
+                        {/* Nav buttons */}
+                        <div className="flex items-center justify-center gap-3">
+                            <button
+                                type="button"
+                                onClick={() => swiperRef.current?.slidePrev()}
+                                className="
+                h-11 w-11 rounded-full border border-gray-200
+                flex items-center justify-center
+                text-text-dark dark:text-background
+                bg-white dark:bg-background-dark-2
+                hover:bg-gray-50 dark:hover:bg-background-dark
+                transition
+              "
+                                aria-label="Previous testimonial"
+                            >
+                                <TestimonialArrowLeftIcon fill="none" />
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => swiperRef.current?.slideNext()}
+                                className="
+                h-11 w-11 rounded-full
+                flex items-center justify-center
+                bg-primary text-white
+                hover:opacity-95 transition
+              "
+                                aria-label="Next testimonial"
+                            >
+                                <TestimonialArrowRightIcon fill="none" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import FullLogo from "@/components/ui/FullLogo";
 import NavLinks from "./NavLinks";
 import { useAuthStore } from "@/zustand/authStore";
-import CurrencyDisplay from "@/components/ui/currency/CurrencyDisplay";
 import CartIcon from "@/public/icons/CartIcon";
 import ThemeToggle from "@/lib/ThemeToggle";
+import MobileMenu from "./MobileMenu";
 
 export default function Header() {
-  const { user: userInfo, _hasHydrated } = useAuthStore();
+  const { user: userInfo, _hasHydrated, token } = useAuthStore();
   const pathname = usePathname();
   const isUserRoute = pathname?.startsWith("/user");
 
@@ -21,7 +21,7 @@ export default function Header() {
   };
 
   return (
-    <header className={`${isUserRoute ? "relative" : "sticky"} top-0 z-30 w-full bg-background dark:bg-background-dark`}>
+    <> <header className={`${isUserRoute ? "relative" : "sticky"} top-0 z-30 w-full hidden lg:block bg-background dark:bg-background-dark`}>
       <div className={`${isUserRoute ? "px-4" : "container mx-auto"} py-3`}>
         <div className="flex items-center justify-between gap-4">
           {/* Left: Logo */}
@@ -40,11 +40,6 @@ export default function Header() {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-3">
-            {/* Mobile menu (you already have) */}
-            {/* <div className="lg:hidden">
-              <MobileMenu userInfo={userInfo} token={token} />
-            </div> */}
-
             {/* Desktop actions */}
             <div className="hidden lg:flex items-center gap-3">
               {/* Login / Account pill */}
@@ -95,5 +90,9 @@ export default function Header() {
         </div>
       </div>
     </header>
+      {/* Mobile menu (you already have) */}
+      <div className="lg:hidden">
+        <MobileMenu userInfo={userInfo} token={token} />
+      </div></>
   );
 }

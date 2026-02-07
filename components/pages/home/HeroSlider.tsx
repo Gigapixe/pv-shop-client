@@ -56,7 +56,7 @@ export default function HeroSlider() {
         >
           {slides.map((s, idx) => (
             <SwiperSlide key={idx}>
-              <div className="relative h-screen w-full">
+              <div className="relative h-[60vh] lg:h-screen w-full">
                 <Image
                   src={s.imageSrc}
                   alt="Hero"
@@ -96,7 +96,7 @@ export default function HeroSlider() {
 
         {/* ✅ Put controls OUTSIDE slides so they exist once */}
         <div className="absolute bottom-6 left-0 right-0 z-30">
-          <div className="container mx-auto px-4 relative flex justify-end items-center gap-3">
+          <div className="container mx-auto px-4 relative flex justify-start lg:justify-end items-center gap-3">
             <button
               aria-label="Previous slide"
               onClick={() => swiperRef.current?.slidePrev()}

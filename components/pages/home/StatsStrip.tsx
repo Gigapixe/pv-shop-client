@@ -14,24 +14,24 @@ const stats: Stat[] = [
 export default function StatsStrip() {
   return (
     <section className="w-full">
-      <div className="bg-white dark:bg-background-dark-2 border-t border-b border-border-light dark:border-border-dark">
+      <div className="bg-primary/10 dark:bg-background-dark-2 border-t border-b border-border-light dark:border-border-dark">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Left text */}
             <div className="max-w-md">
               <p className="text-base sm:text-lg font-semibold text-text-dark dark:text-background leading-snug">
-                Join thousands of satisfied <br className="hidden sm:block" />
+                Join thousands of satisfied <br className="hidden lg:block" />
                 users who have scaled with us
               </p>
             </div>
 
             {/* Right stats */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end w-full lg:w-auto">
+            <div className="flex flex-col md:flex-row md:items-center gap-10 lg:justify-end w-full lg:w-auto">
               {stats.map((s, idx) => (
                 <div
                   key={s.label}
                   className={`flex items-center ${
-                    idx !== 0 ? "sm:pl-8 sm:ml-8 sm:border-l sm:border-gray-200 dark:sm:border-white/10" : ""
+                    idx !== 0 ? "md:pl-8 md:ml-8 md:border-l md:border-gray-400 dark:md:border-white/10" : ""
                   }`}
                 >
                   <div className="flex flex-col">

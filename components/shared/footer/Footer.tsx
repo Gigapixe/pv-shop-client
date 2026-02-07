@@ -46,7 +46,7 @@ export default function Footer() {
         style={{ backgroundImage: "url(/assets/footerbg.png)" }}>
         <div className="container mx-auto px-4 pb-5 pt-16 lg:pt-20">
           {/* Top row */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+          <div className="flex flex-col lg:flex-row justify-center lg:items-start lg:justify-between gap-8">
             {/* Logo */}
             <div className="max-w-md">
               <Link href="/" className="inline-flex items-center gap-3">
@@ -67,22 +67,21 @@ export default function Footer() {
               <div className="flex flex-wrap lg:justify-end gap-3">
                 <Link
                   href="/packages"
-
+                  className="block w-full lg:w-auto"
                 >
-                  <Button size="lg" variant="primary" arrowIcon className="hover:bg-primary"> Explore Our Packages
+                  <Button size="lg" variant="primary" arrowIcon className="hover:bg-primary w-full"> Explore Our Packages
                   </Button>
                 </Link>
 
                 <Link
                   href="/contact"
-
+                  className="block w-full lg:w-auto"
                 >
-
-                  <Button arrowIcon variant="outline" size="lg" className="text-black dark:text-background">Contact Us</Button>
+                  <Button arrowIcon variant="outline" size="lg" className="text-black dark:text-background w-full">Contact Us</Button>
                 </Link>
               </div>
 
-              <p className="mt-3 text-xs sm:text-sm text-gray-600 dark:text-background/70 leading-relaxed">
+              <p className="mt-3 px-1 text-xs sm:text-sm text-gray-600 dark:text-background/70 leading-relaxed">
                 pvaeshop.com provides PVA, Accounts & Much More Services For Different Popular Social Networks Such As Facebook, Instagram, Twitter & Etc.
               </p>
             </div>
@@ -207,11 +206,11 @@ export default function Footer() {
               </div>
             </div>
           </div>
-
+          <div className="mt-8 h-px w-full bg-black/10 dark:bg-white/10" />
           {/* Copyright */}
-          {/* <div className="mt-10 text-center text-xs text-gray-600 dark:text-background/60">
-            © {new Date().getFullYear()} Pvaeshop. All rights reserved.
-          </div> */}
+          <div className="mt-6 text-center text-xs text-gray-600 dark:text-background/60">
+            Copyright © Pvaeshop {new Date().getFullYear()} | All rights reserved.
+          </div>
         </div>
       </div>
     </footer>

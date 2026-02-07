@@ -49,7 +49,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
             <SectionLabel>Our Packages</SectionLabel>
-            <h1 className="mt-2 text-2xl sm:text-5xl font-bold text-text-dark dark:text-background">
+            <h1 className="mt-2 text-2xl md:text-[36px] lg:text-5xl font-bold text-text-dark dark:text-background">
               Full Spectrum of PVA Services
             </h1>
             <p className="mt-2 text-sm text-gray-600 dark:text-background/60">
@@ -57,7 +57,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {packagesData.map((p) => (
               <PackageCard key={p._id} {...p} />
             ))}

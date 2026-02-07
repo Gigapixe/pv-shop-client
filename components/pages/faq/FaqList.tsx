@@ -64,7 +64,7 @@ export default function FaqList() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto">
           <SectionLabel>FAQ</SectionLabel>
-          <h2 className="mt-2 text-3xl sm:text-5xl font-bold text-text-dark dark:text-background">
+          <h2 className="mt-2 text-2xl md:text-[36px] lg:text-5xl font-bold text-text-dark dark:text-background">
             Frequently Asked Questions
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-600 dark:text-background/70">

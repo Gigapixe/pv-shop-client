@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 const GrowSection = () => {
     return (
         <section
-            className="w-full py-14 sm:py-20 bg-no-repeat bg-cover bg-center"
+            className="w-full py-14 bg-no-repeat bg-cover bg-center"
             style={{ backgroundImage: "url(/assets/footerbg.png)" }}
         >
             <div className="container mx-auto px-4">
@@ -15,7 +15,7 @@ const GrowSection = () => {
                     <div className="max-w-2xl">
                         <SectionLabel className="text-left flex justify-start">WHY CHOOSE US</SectionLabel>
 
-                        <h2 className="mt-3 text-3xl sm:text-5xl font-bold text-text-dark dark:text-background leading-tight">
+                        <h2 className="mt-3 text-2xl md:text-[36px] lg:text-5xl font-bold text-text-dark dark:text-background leading-tight">
                             Grow Smarter with 100% <br className="hidden sm:block" />
                             Genuine PVA Accounts
                         </h2>
