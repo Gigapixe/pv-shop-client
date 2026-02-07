@@ -31,20 +31,20 @@ const otherLinks = [
 ];
 
 const socials = [
-  { name: "LinkedIn", href: "#", icon: <LinkedInIcon/> },
-  { name: "Facebook", href: "#", icon: <FacebookIcon/> },
-  { name: "X", href: "#", icon: <TwitterIcon/> },
-  { name: "Instagram", href: "#", icon: <InstagramIcon/> },
+  { name: "LinkedIn", href: "#", icon: <LinkedInIcon /> },
+  { name: "Facebook", href: "#", icon: <FacebookIcon /> },
+  { name: "X", href: "#", icon: <TwitterIcon /> },
+  { name: "Instagram", href: "#", icon: <InstagramIcon /> },
 ];
 
 export default function Footer() {
   return (
     <footer
-      className="w-full bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url(/assets/footerbg.png)" }}
+      className="w-full"
     >
-      <div className="bg-white/80 dark:bg-background/80 backdrop-blur-[1px]">
-        <div className="container mx-auto px-4 py-10">
+      <div className="w-full bg-no-repeat bg-cover bg-center"
+        style={{ backgroundImage: "url(/assets/footerbg.png)" }}>
+        <div className="container mx-auto px-4 pb-5 pt-20">
           {/* Top row */}
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             {/* Logo */}
@@ -143,14 +143,14 @@ export default function Footer() {
 
                 <li className="flex items-center gap-2">
                   <span className="text-[#DE5A2E]">
-                    <SendIcon fill="none"/>
+                    <SendIcon fill="none" />
                   </span>
                   <span>Pvaeshop</span>
                 </li>
 
                 <li className="flex items-center gap-2">
                   <span className="text-[#DE5A2E]">
-                    <PhoneIcon fill="none"/>
+                    <PhoneIcon fill="none" />
                   </span>
                   <a href="tel:+12135109004" className="hover:text-primary transition">
                     +12135109004
@@ -173,15 +173,15 @@ export default function Footer() {
 
               <div className="mt-4 flex items-center gap-3">
                 {/* Replace with your real icons */}
-                <VisaIcon/>
-                <PaypalIcon/>
-                <MasterIcon/>
+                <VisaIcon />
+                <PaypalIcon />
+                <MasterIcon />
                 <Image src="/assets/stripe.png" alt="Stripe" width={44} height={28} className="h-6 w-auto" />
               </div>
             </div>
 
             {/* Follow us */}
-            <div className="md:text-right">
+            <div>
               <h4 className="text-sm font-bold tracking-wide text-text-dark dark:text-background">
                 FOLLOW US
               </h4>
