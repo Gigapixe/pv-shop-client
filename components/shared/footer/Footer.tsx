@@ -2,8 +2,15 @@
 
 import Button from "@/components/ui/Button";
 import EmailIcon from "@/public/icons/EmailIcon";
+import MasterIcon from "@/public/icons/MasterIcon";
+import PaypalIcon from "@/public/icons/PaypalIcon";
 import PhoneIcon from "@/public/icons/PhoneIcon";
 import SendIcon from "@/public/icons/SendIcon";
+import FacebookIcon from "@/public/icons/social/FacebookIcon";
+import InstagramIcon from "@/public/icons/social/InstagramIcon";
+import LinkedInIcon from "@/public/icons/social/LinkedInIcon";
+import TwitterIcon from "@/public/icons/social/TwitterIcon";
+import VisaIcon from "@/public/icons/VisaIcon";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,9 +31,10 @@ const otherLinks = [
 ];
 
 const socials = [
-  { name: "Facebook", href: "#", icon: "f" },
-  { name: "X", href: "#", icon: "x" },
-  { name: "Instagram", href: "#", icon: "ig" },
+  { name: "LinkedIn", href: "#", icon: <LinkedInIcon/> },
+  { name: "Facebook", href: "#", icon: <FacebookIcon/> },
+  { name: "X", href: "#", icon: <TwitterIcon/> },
+  { name: "Instagram", href: "#", icon: <InstagramIcon/> },
 ];
 
 export default function Footer() {
@@ -165,10 +173,10 @@ export default function Footer() {
 
               <div className="mt-4 flex items-center gap-3">
                 {/* Replace with your real icons */}
-                <Image src="/assets/payments/visa.png" alt="Visa" width={44} height={28} className="h-6 w-auto" />
-                <Image src="/assets/payments/paypal.png" alt="PayPal" width={44} height={28} className="h-6 w-auto" />
-                <Image src="/assets/payments/mastercard.png" alt="Mastercard" width={44} height={28} className="h-6 w-auto" />
-                <Image src="/assets/payments/stripe.png" alt="Stripe" width={44} height={28} className="h-6 w-auto" />
+                <VisaIcon/>
+                <PaypalIcon/>
+                <MasterIcon/>
+                <Image src="/assets/stripe.png" alt="Stripe" width={44} height={28} className="h-6 w-auto" />
               </div>
             </div>
 
@@ -188,11 +196,12 @@ export default function Footer() {
                       flex items-center justify-center
                       bg-[#DE5A2E] text-white
                       hover:opacity-90 transition
+                      dark:text-black
                     "
                     aria-label={s.name}
                   >
                     {/* simple text icons; swap with svg if you want */}
-                    <span className="text-xs font-bold uppercase">{s.icon}</span>
+                    <span >{s.icon}</span>
                   </a>
                 ))}
               </div>
@@ -200,9 +209,9 @@ export default function Footer() {
           </div>
 
           {/* Copyright */}
-          <div className="mt-10 text-center text-xs text-gray-600 dark:text-background/60">
+          {/* <div className="mt-10 text-center text-xs text-gray-600 dark:text-background/60">
             © {new Date().getFullYear()} Pvaeshop. All rights reserved.
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
