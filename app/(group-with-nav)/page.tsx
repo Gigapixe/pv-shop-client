@@ -3,6 +3,7 @@ import GrowSection from '@/components/pages/home/GrowSection';
 import HeroSlider from '@/components/pages/home/HeroSlider'
 import PackageCard from '@/components/pages/home/PackageCard';
 import StatsStrip from '@/components/pages/home/StatsStrip'
+import TestimonialsSlider from '@/components/pages/home/TestimonialsSlider';
 import SectionLabel from '@/components/ui/SectionLabel';
 import { CartItemType } from '@/zustand/store';
 
@@ -65,6 +66,7 @@ const Home = () => {
 
       <GrowSection />
       <FeaturesHighlights />
+      <TestimonialsSlider/>
     </div>
   )
 }
