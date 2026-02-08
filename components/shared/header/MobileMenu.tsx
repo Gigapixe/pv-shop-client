@@ -1,277 +1,369 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeToggle from "@/lib/ThemeToggle";
-
 import NoticeServices from "@/services/noticeServices";
 import CartIcon from "@/public/icons/CartIcon";
 import Button from "@/components/ui/Button";
-import SearchCloseIcon from "@/public/icons/SearchCloseIcon";
 import MenuIcon from "@/public/icons/MenuIcon";
+import SearchCloseIcon from "@/public/icons/SearchCloseIcon";
+import DownArrowIcon from "@/public/icons/DownArrowIcon";
 
 interface Props {
   userInfo?: any;
   token?: string | null;
-  unreadCount?: number;
-  openSettingsModal?: () => void;
-  LangCurrency?: React.ReactNode;
 }
 
-const NAV_LINKS = [
-  { label: "Best Sellers", href: "/bestseller" },
-  { label: "About Us", href: "/about-us" },
-  { label: "Contact Us", href: "/contact-us" },
+const quickLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about-us" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact-us" },
   { label: "FAQ", href: "/faq" },
+  { label: "Checkout", href: "/checkout" },
 ];
 
-export default function MobileMenu({
-  userInfo,
-  token,
-  LangCurrency,
-}: Props) {
-  const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [unreadCount, setUnreadCount] = useState(0);
+type CategoryItem = {
+  label: string;
+  href?: string; // optional if you want parent clickable too
+  children?: { label: string; href: string }[];
+};
 
-  const getFirstName = (fullName?: string) => {
-    if (!fullName) return null;
-    const first = String(fullName).trim().split(" ")[0];
-    return first ? first.charAt(0).toUpperCase() + first.slice(1) : null;
+const categories: CategoryItem[] = [
+  {
+    label: "Google",
+    children: [
+      { label: "Gmail PVA", href: "/category/google/gmail" },
+      { label: "Google Voice", href: "/category/google/voice" },
+      { label: "Recovery Email", href: "/category/google/recovery" },
+    ],
+  },
+  {
+    label: "Outlook/Hotmail",
+    children: [
+      { label: "Hotmail PVA", href: "/category/outlook/hotmail" },
+      { label: "Outlook PVA", href: "/category/outlook/outlook" },
+    ],
+  },
+  {
+    label: "Yahoo",
+    children: [
+      { label: "Yahoo PVA", href: "/category/yahoo/pva" },
+      { label: "Aged Yahoo", href: "/category/yahoo/aged" },
+    ],
+  },
+  {
+    label: "Youtube",
+    children: [
+      { label: "Youtube PVA", href: "/category/youtube/pva" },
+      { label: "Monetized", href: "/category/youtube/monetized" },
+    ],
+  },
+  {
+    label: "Twitter",
+    children: [
+      { label: "X PVA", href: "/category/twitter/pva" },
+      { label: "Aged X", href: "/category/twitter/aged" },
+    ],
+  },
+  {
+    label: "Others",
+    children: [
+      { label: "Tinder", href: "/category/others/tinder" },
+      { label: "Pinterest", href: "/category/others/pinterest" },
+    ],
+  },
+];
+
+const getFirstName = (fullName?: string) => {
+  if (!fullName) return null;
+  const first = String(fullName).trim().split(" ")[0];
+  return first ? first.charAt(0).toUpperCase() + first.slice(1) : null;
+};
+
+export default function MobileMenu({ userInfo, token }: Props) {
+  const [open, setOpen] = useState(false);
+  const [render, setRender] = useState(false); // keep mounted while closing
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  const openDrawer = () => {
+    setMounted(true);
+    // IMPORTANT: allow first paint with translate-x-full
+    requestAnimationFrame(() => setOpen(true));
   };
+
+  const closeDrawer = () => {
+    setOpen(false);
+    setActiveCategory(null);
+    setTimeout(() => setMounted(false), 300); // must match duration-300
+  };
+
+
+  // mount/unmount with animation
+  useEffect(() => {
+    if (open) setRender(true);
+    if (!open && render) {
+      const t = setTimeout(() => setRender(false), 260); // match duration
+      return () => clearTimeout(t);
+    }
+  }, [open, render]);
 
   const fetchUserNotices = useCallback(async () => {
     if (!userInfo || !token) return;
-
     try {
       const countRes = await NoticeServices.getUnreadCount({ token });
       if (countRes?.status === "success") {
         setUnreadCount(countRes.data.unreadCount ?? 0);
-      } else {
-        const res = await NoticeServices.getUserNotices(
-          { page: 1, limit: 8 },
-          { token }
-        );
-        const notices = res?.data?.notices ?? [];
-        setUnreadCount(notices.filter((n: any) => !n.isRead).length);
       }
-    } catch (err) {
-      console.error("Failed to fetch user notices:", err);
+    } catch {
+      // silent
     }
   }, [userInfo, token]);
 
-  // outside click + ESC
-  useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setIsOpen(false);
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setIsOpen(false);
-    }
-    document.addEventListener("mousedown", onClick);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onClick);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, []);
-
-  // unread count
   useEffect(() => {
     if (!userInfo || !token) {
       setUnreadCount(0);
       return;
     }
     fetchUserNotices();
-    const interval = setInterval(fetchUserNotices, 60000);
-    return () => clearInterval(interval);
   }, [userInfo, token, fetchUserNotices]);
 
-  // notice events
+  // ESC closes
   useEffect(() => {
-    const onNoticeRead = () => setUnreadCount((p) => Math.max(0, p - 1));
-    const onAllRead = () => setUnreadCount(0);
-
-    window.addEventListener("noticeRead", onNoticeRead as any);
-    window.addEventListener("noticesMarkedAllRead", onAllRead as any);
-
-    return () => {
-      window.removeEventListener("noticeRead", onNoticeRead as any);
-      window.removeEventListener("noticesMarkedAllRead", onAllRead as any);
-    };
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // lock body scroll
+  // lock scroll
   useEffect(() => {
-    if (!isOpen) return;
-    const originalOverflow = document.body.style.overflow;
+    if (!open) return;
+    const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = originalOverflow;
+      document.body.style.overflow = original;
     };
-  }, [isOpen]);
+  }, [open]);
+
 
   return (
-    <div className="w-full" ref={ref}>
-      {/* Header bar (matches screenshot) */}
-      <div className="w-full bg-background dark:bg-background-dark">
-        <div className="px-4 py-3 flex items-center justify-between gap-3">
-          {/* Left: Menu */}
+    <div className="lg:hidden">
+      {/* TOP BAR */}
+      <div className="sticky top-0 z-40 w-full bg-background dark:bg-background-dark">
+        <div className="px-4 py-3 flex items-center justify-between">
           <button
-            onClick={() => setIsOpen((s) => !s)}
+            onClick={openDrawer}
             className="p-2 -ml-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition"
-            aria-expanded={isOpen}
-            aria-label="Toggle menu"
+            aria-label="Open menu"
           >
-            {isOpen ? <SearchCloseIcon /> : <MenuIcon />}
+            <MenuIcon />
           </button>
 
-          {/* Center: Full logo */}
-          <Link href="/" className="flex-1 flex justify-center" onClick={() => setIsOpen(false)}>
+          <Link href="/" className="flex-1 flex justify-center">
             <Image
               src="/logo/logo.png"
               alt="Pvaeshop"
-              width={180}
+              width={170}
               height={40}
               priority
-              className="h-8 w-auto object-contain"
+              className="h-7 w-auto object-contain"
             />
           </Link>
 
-          {/* Right: round cart icon (mobile look) */}
           <Link
             href="/cart"
-            className="p-2 -mr-2 rounded-full block md:hidden border border-primary/30 bg-primary/5 hover:bg-primary/10 transition"
+            className="p-2 -mr-2 rounded-full border border-primary/30 bg-primary/5 hover:bg-primary/10 transition"
             aria-label="Cart"
           >
             <CartIcon className="w-5 h-5 text-primary" fill="none" />
           </Link>
-
-          {/* Tablet row (md): Login + Cart amount pills like screenshot */}
-          <div className="hidden md:flex items-center justify-end gap-3 px-4">
-            {!userInfo ? (
-              <Link href="/login" className="inline-flex">
-                <Button variant="outline" size="md" className="text-primary border-primary/40">
-                  Login
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/user" className="inline-flex">
-                <Button variant="outline" size="md" className="text-primary border-primary/40">
-                  {getFirstName(userInfo?.name) ?? "Account"}
-                </Button>
-              </Link>
-            )}
-
-            <div className="rounded-full flex items-center gap-2 border border-primary/40 bg-primary/5 px-5 py-2 font-semibold text-primary">
-              <CartIcon className="w-5 h-5" fill="none" />
-              $0.00
-            </div>
-          </div>
         </div>
-
-
       </div>
 
-      {/* Dropdown panel */}
-      {isOpen && (
+      {mounted && (
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 top-16 bg-black/50 z-30"
-            onClick={() => setIsOpen(false)}
+            className={[
+              "fixed inset-0 z-40 bg-black/45 transition-opacity duration-300",
+              open ? "opacity-100" : "opacity-0",
+            ].join(" ")}
+            onClick={closeDrawer}
             aria-hidden="true"
           />
 
-          {/* Panel */}
-          <div className="fixed left-0 right-0 top-16 z-40 bg-background dark:bg-background-dark shadow-lg">
-            <div className="px-4 py-6">
-              <h1 className="text-xl font-bold mb-4 text-text-dark dark:text-background">
-                Quick Links
-              </h1>
+          {/* Drawer */}
+          <aside
+            className={[
+              "fixed left-0 top-0 z-50 h-full w-full",
+              "bg-white dark:bg-background-dark shadow-xl overflow-y-auto",
+              "transition-transform duration-300 ease-out will-change-transform",
+              open ? "translate-x-0" : "-translate-x-full",
+            ].join(" ")}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-black/10 dark:border-white/10">
+              <button
+                onClick={closeDrawer}
+                className="p-2 -ml-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition"
+                aria-label="Close menu"
+              >
+                <SearchCloseIcon />
+              </button>
 
-              <div className="space-y-1">
-                {NAV_LINKS.map((l) => (
+              <Link href="/" onClick={closeDrawer} className="flex-1 flex justify-center">
+                <Image
+                  src="/logo/logo.png"
+                  alt="Pvaeshop"
+                  width={140}
+                  height={36}
+                  className="h-7 w-auto object-contain"
+                  priority
+                />
+              </Link>
+
+              <Link
+                href="/cart"
+                onClick={closeDrawer}
+                className="p-2 -mr-2 rounded-full border border-primary/30 bg-primary/5 hover:bg-primary/10 transition"
+                aria-label="Cart"
+              >
+                <CartIcon className="w-5 h-5 text-primary" fill="none" />
+              </Link>
+            </div>
+
+            {/* Search row */}
+            <div className="px-4 pt-4">
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <ThemeToggle />
+                </div>
+
+                <Button
+                  variant="outline"
+                  className=" border border-gray-200 py-2.5 text-text-dark dark:bg-background-dark-2 dark:text-background dark:border-white/10"
+                >
+                  English <DownArrowIcon className="w-3 h-3 opacity-90" />
+                </Button>
+
+                {userInfo ? (
                   <Link
-                    key={l.href}
+                    href="/user"
+                    className="rounded-full border border-primary px-8 py-2 text-[18px] font-semibold text-primary bg-primary/5 hover:bg-primary/10 transition"
+                  >
+                    {getFirstName(userInfo.name) ?? "Account"}
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="rounded-full border border-primary px-8 py-2 flex items-center justify-center text-[18px] font-semibold text-primary bg-primary/5 hover:bg-primary/10 transition"
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
+
+
+            </div>
+
+            {/* Quick Links */}
+            <div className="px-4 pt-4">
+              <p className="text-xs text-gray-500 dark:text-background/60 mb-2">Quick Links</p>
+              <div className="space-y-2">
+                {quickLinks.map((l) => (
+                  <Link
+                    key={l.label}
                     href={l.href}
-                    className="block rounded-xl px-3 py-3 font-semibold text-text-dark dark:text-background hover:bg-black/5 dark:hover:bg-white/10 transition"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeDrawer}
+                    className={[
+                      "block text-sm font-semibold",
+                      l.label === "Home"
+                        ? "text-primary"
+                        : "text-text-dark dark:text-background",
+                    ].join(" ")}
                   >
                     {l.label}
                   </Link>
                 ))}
               </div>
+            </div>
 
-              <div className="my-5 h-px w-full bg-black/10 dark:bg-white/10" />
+            <div className="my-4 h-px bg-black/10 dark:bg-white/10" />
 
-              {/* Settings row */}
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-text-dark dark:text-background">
-                    Theme Mode
-                  </span>
-                  <ThemeToggle />
-                </div>
+            {/* Categories (dropdown like screenshot) */}
+            <div className="px-4 pb-6">
+              <p className="text-xs text-gray-500 dark:text-background/60 mb-2">Categories</p>
 
-                {/* {userInfo && (
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-text-dark dark:text-background">
-                      Notifications
-                    </span>
-                    <Link href="/user/notifications" onClick={() => setIsOpen(false)}>
+              <div className="divide-y divide-black/5 dark:divide-white/10">
+                {categories.map((cat) => {
+                  const isActive = activeCategory === cat.label;
+
+                  return (
+                    <div key={cat.label} className="py-1">
+                      {/* row */}
                       <button
                         type="button"
-                        className="relative p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition"
-                        aria-label="Open notifications"
+                        onClick={() => setActiveCategory((p) => (p === cat.label ? null : cat.label))}
+                        className="w-full flex items-center justify-between py-2 text-left"
                       >
-                        <NotificationIcon className="dark:text-white" />
-                        {unreadCount > 0 && (
-                          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
-                            {unreadCount}
-                          </span>
-                        )}
+                        <span className="text-sm font-semibold text-text-dark dark:text-background">
+                          {cat.label}
+                        </span>
+
+                        <span
+                          className={[
+                            "transition-transform duration-200 text-gray-400",
+                            isActive ? "rotate-90" : "rotate-0",
+                          ].join(" ")}
+                        >
+                          <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+                            <path
+                              fill="currentColor"
+                              d="M9 18a1 1 0 0 1-.7-1.7l4.6-4.6-4.6-4.6A1 1 0 0 1 9.7 5.7l5.3 5.3a1 1 0 0 1 0 1.4l-5.3 5.3A1 1 0 0 1 9 18z"
+                            />
+                          </svg>
+                        </span>
                       </button>
-                    </Link>
-                  </div>
-                )} */}
 
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-text-dark dark:text-background">
-                    Language & Currency
-                  </span>
-
-
-                </div>
-              </div>
-
-              {/* Mobile actions */}
-              <div className="mt-6 flex gap-3 md:hidden">
-                {!userInfo ? (
-                  <Link href="/login" className="flex-1" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" size="md" className="w-full text-primary border-primary/40">
-                      Login
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link href="/user" className="flex-1" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" size="md" className="w-full text-primary border-primary/40">
-                      {getFirstName(userInfo?.name) ?? "Account"}
-                    </Button>
-                  </Link>
-                )}
-
-                <Link href="/packages" className="flex-1" onClick={() => setIsOpen(false)}>
-                  <Button variant="primary" size="md" className="w-full">
-                    Packages
-                  </Button>
-                </Link>
+                      {/* dropdown under row */}
+                      <div
+                        className={[
+                          "grid transition-all duration-300 ease-in-out",
+                          isActive ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+                        ].join(" ")}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="pb-3 pl-3">
+                            <div className="flex flex-col gap-2">
+                              {(cat.children ?? []).map((sub) => (
+                                <Link
+                                  key={sub.href}
+                                  href={sub.href}
+                                  onClick={closeDrawer}
+                                  className="text-sm text-gray-600 dark:text-background/70 hover:text-primary transition"
+                                >
+                                  {sub.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          </div>
+          </aside>
         </>
       )}
+
     </div>
   );
 }
